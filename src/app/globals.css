@@ -52,8 +52,8 @@ button {
 /* === SCI-FI THEME - COLORS === */
 :root {
   --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-panel: #1a1a1a;
+  --bg-secondary: #0a0a0a;
+  --bg-panel: #0a0a0a;
   --text-primary: #00ff41;
   --text-secondary: #00cc33;
   --text-muted: #00aa22;
