@@ -40,7 +40,7 @@ export default function CommandLine({ onCommandSubmit }: CommandLineProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type Command..."
-            className="terminal-output"
+            className="w-full bg-transparent border-none outline-none text-[var(--text-primary)] font-mono text-lg px-2 py-3 caret-[#00ff41]"
             autoFocus
         />
     );
