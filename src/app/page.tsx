@@ -1,19 +1,43 @@
 // src/app/page.tsx
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import StatusBar from '@/components/StatusBar';
 import TerminalOutput from '@/components/TerminalOutput';
 import CommandLine from '@/components/CommandLine';
 
+/**
+ * MainPage - The root component of the game interface
+ * 
+ * This is the central hub that connects:
+ * - StatusBar (top)
+ * - TerminalOutput (middle, scrollable area)
+ * - CommandLine (bottom)
+ */
+
 export default function MainPage() {
-  // Debugging: Make sure that components load correctly during developement
+
+  // Game state: Stores all visible messages in the terminal
+  const [messages, setMessages] = useState<string[]>([]);
+
+  // Debugging: Make sure that components load correctly during development
   useEffect(() => {
     console.log("MainPage-component loaded correctly");
     console.log("StatusBar is visible");
     console.log("TerminalOutput is visible");
     console.log("CommandLine is visible");
   }, []);
+
+  /**
+   * Handles commands submitted from the CommandLine component
+   * Currently just echoes the command to the terminal
+   */
+  const handleCommandSubmit = (command: string) => {
+    console.log("MainPage received command:", command);
+
+    // Add the command to the messages array (visible in TerminalOutput)
+    setMessages(prev => [...prev, `> ${command}`]);
+  };
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col p-4">
@@ -25,12 +49,12 @@ export default function MainPage() {
       
       {/* Main Terminal Area - Takes up remaining space and grows */}
       <div className="flex-1 flex flex-col overflow-hidden border-y border-[var(--border)] bg-[var(--bg-panel)] p-4">
-        <TerminalOutput />
+        <TerminalOutput messages={messages}/>
       </div>
 
       {/* Command Line - Fixed at the bottom*/}
       <div className="border-y border-[var(--border)] p-4">
-        <CommandLine />
+        <CommandLine onCommandSubmit={handleCommandSubmit} />
       </div>
     </main> 
   );
