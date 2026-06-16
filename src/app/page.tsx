@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import StatusBar from '@/components/StatusBar';
 import TerminalOutput from '@/components/TerminalOutput';
 import CommandLine from '@/components/CommandLine';
+import { Game } from '@/lib/game/Game';
+import { Sector } from '@/lib/game/Sector';
 
 /**
  * MainPage - The root component of the game interface
@@ -19,13 +21,18 @@ export default function MainPage() {
 
   // Game state: Stores all visible messages in the terminal
   const [messages, setMessages] = useState<string[]>([]);
-
+  const [game] = useState(() => new Game());
+  const [sector] = useState(() => new Sector("Sector One", 100));
+  
   // Debugging: Make sure that components load correctly during development
   useEffect(() => {
     console.log("MainPage-component loaded correctly");
     console.log("StatusBar is visible");
     console.log("TerminalOutput is visible");
     console.log("CommandLine is visible");
+    game.addSector(sector);
+    game.activateGame();
+    console.log("Game active status: ", game.getGameState());
   }, []);
 
   /**

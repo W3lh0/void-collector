@@ -7,8 +7,8 @@ import React from "react";
 /**
  * TerminalOutput Component
  * 
- * Resposible for displaying all messages and system output in the main terminal arena.
- * Recives the messages array from MainPage and renders them as a scrollable list.
+ * Responsible for displaying all messages and system output in the main terminal area.
+ * Receives the messages array from MainPage and renders them as a scrollable list.
  */
 
 interface TerminalOutputProps {
@@ -21,11 +21,11 @@ export default function TerminalOutput({ messages = [] }: TerminalOutputProps) {
     console.log("current messages count:", messages.length);
 
     return (
-        <div className="terminal-outut flex-1 overflow-auto font-mono text-sm">
+        <div className="terminal-output flex-1 overflow-auto font-mono text-sm">
             {messages.length === 0 ? (
                 // Show when there are no messages yet
                 <p className="text-[var(--text-secondary)]">
-                    Connection establisehed. Awaiting command...
+                    Connection established. Awaiting commands...
                 </p>
             ) : (
                 // Render each message as its own line
