@@ -1,6 +1,7 @@
 // src/lib/game/Game.ts
 
 import { Sector } from '@/lib/game/Sector';
+import { GameObject } from './GameObject';
 
 /**
  * Game - The main game engine class.

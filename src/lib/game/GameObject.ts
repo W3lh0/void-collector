@@ -22,4 +22,8 @@ export class GameObject {
         this.radius = radius;
         this.location = { x, y, z };
     }
+
+    public getName(): string { return this.name; }
+    public getRadius(): number { return this.radius; }
+    public getLocation(): Position { return this.location; }
 }   

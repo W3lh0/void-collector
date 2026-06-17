@@ -7,6 +7,7 @@ import TerminalOutput from '@/components/TerminalOutput';
 import CommandLine from '@/components/CommandLine';
 import { Game } from '@/lib/game/Game';
 import { Sector } from '@/lib/game/Sector';
+import { GameObject } from '@/lib/game/GameObject';
 
 /**
  * MainPage - The root component of the game interface.
@@ -21,13 +22,18 @@ export default function MainPage() {
   const [messages, setMessages] = useState<string[]>([]);
   // Main game engine instance
   const [game] = useState(() => new Game());
-  //Current active sector (for testing)
+  // Current active sector (for testing)
   const [sector] = useState(() => new Sector("Sector One", 100));
+  // Current GameObjects (for testing)
+  const [shipOne] = useState(() => new GameObject("Mother", 10, 0, 0, 0));
+  const [shipWreck] = useState(() => new GameObject("Wreck", 5 , 30, 15, 20));
   
   // Initialize game world when component mounts
   useEffect(() => {
     game.addSector(sector);
     game.activateGame();
+    sector.addObject(shipOne);
+    sector.addObject(shipWreck);
     console.log("Game active status: ", game.getGameState());
   }, []);
 
