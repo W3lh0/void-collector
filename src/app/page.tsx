@@ -9,41 +9,39 @@ import { Game } from '@/lib/game/Game';
 import { Sector } from '@/lib/game/Sector';
 
 /**
- * MainPage - The root component of the game interface
+ * MainPage - The root component of the game interface.
  * 
- * This is the central hub that connects:
- * - StatusBar (top)
- * - TerminalOutput (middle, scrollable area)
- * - CommandLine (bottom)
+ * This is the central hub that connects the UI components
+ * and manages the game instances.
  */
 
 export default function MainPage() {
 
-  // Game state: Stores all visible messages in the terminal
+  // Terminal messages shown to the player
   const [messages, setMessages] = useState<string[]>([]);
+  // Main game engine instance
   const [game] = useState(() => new Game());
+  //Current active sector (for testing)
   const [sector] = useState(() => new Sector("Sector One", 100));
   
-  // Debugging: Make sure that components load correctly during development
+  // Initialize game world when component mounts
   useEffect(() => {
-    console.log("MainPage-component loaded correctly");
-    console.log("StatusBar is visible");
-    console.log("TerminalOutput is visible");
-    console.log("CommandLine is visible");
     game.addSector(sector);
     game.activateGame();
     console.log("Game active status: ", game.getGameState());
   }, []);
 
   /**
-   * Handles commands submitted from the CommandLine component
-   * Currently just echoes the command to the terminal
+   * Handles commands submitted from the CommandLine component.
+   * Processes the command through the Game engine and displays
+   * both the command and response in the terminal.
    */
   const handleCommandSubmit = (command: string) => {
-    console.log("MainPage received command:", command);
-
+    const userCommand = `> ${command}`;
+    const response = game.processCommand(command);
+   
     // Add the command to the messages array (visible in TerminalOutput)
-    setMessages(prev => [...prev, `> ${command}`]);
+    setMessages(prev => [...prev, userCommand, response]);
   };
 
   return (
