@@ -25,14 +25,12 @@ export default function MainPage() {
   // Current active sector (for testing)
   const [sector] = useState(() => new Sector("Sector One", 100));
   // Current GameObjects (for testing)
-  const [shipOne] = useState(() => new GameObject("Mother", 10, 0, 0, 0));
   const [shipWreck] = useState(() => new GameObject("Wreck", 5 , 30, 15, 20));
   
   // Initialize game world when component mounts
   useEffect(() => {
     game.addSector(sector);
     game.activateGame();
-    sector.addObject(shipOne);
     sector.addObject(shipWreck);
     console.log("Game active status: ", game.getGameState());
   }, []);

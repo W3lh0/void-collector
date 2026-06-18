@@ -12,14 +12,17 @@ import { GameObject } from './GameObject';
 export class Game {
     private sectors: Sector[];
     private gameIsActive: boolean;
+    private currentSector: Sector | null = null;
 
     constructor() {
         this.sectors = [];
         this.gameIsActive = false;
+        this.currentSector = null;
     }
 
     // Returns whether the game is currently active.
-    public getGameState(): boolean { return this.gameIsActive } 
+    public getGameState(): boolean { return this.gameIsActive; } 
+    public getCurrentSector(): Sector | null { return this.currentSector; }
 
     /**
      * Processes player commands and returns appropriate response.
@@ -27,9 +30,22 @@ export class Game {
      */
     public processCommand(command: string): string {
         switch (command.toLowerCase()) {
-            case "scan": 
-                return "No objects found";
-            
+            case "scan":
+                const currentSector = this.getCurrentSector();
+
+                if (!currentSector) {
+                    return "No active sector.";
+                }
+
+                const sectorObjects = currentSector.getObjects();
+
+                if (sectorObjects.length === 0) {
+                    return "No objects found in this sector.";
+                } else {
+                    const objectName = sectorObjects.map(obj => obj.getName()).join(", ");
+                    return `Objects detected: ${objectName}`;
+                }
+                
             case "help":
                 return "Available commands; scan";
 
@@ -41,6 +57,7 @@ export class Game {
     // Adds a sector to the game world.
     public addSector(obj: Sector) {
         this.sectors.push(obj);
+        this.currentSector = obj;
         console.log("Sector added: ", obj);
         console.log(this.sectors);
     }
