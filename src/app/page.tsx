@@ -8,6 +8,7 @@ import CommandLine from '@/components/CommandLine';
 import { Game } from '@/lib/game/Game';
 import { Sector } from '@/lib/game/Sector';
 import { GameObject } from '@/lib/game/GameObject';
+import { Item } from '@/lib/game/Item';
 
 /**
  * MainPage - The root component of the game interface.
@@ -26,13 +27,24 @@ export default function MainPage() {
   const [sector] = useState(() => new Sector("Sector One", 100));
   // Current GameObjects (for testing)
   const [shipWreck] = useState(() => new GameObject("Wreck", 5 , 30, 15, 20));
-  
+  const [mother] = useState(() => new GameObject("Mother", 10, 0, 0, 0));
+  const [harvester] = useState(() => new GameObject("Harvester", 1, 0, 0, 1));
+  const [fuelCell] = useState(() => new Item("Fuel Cell"));
+   
   // Initialize game world when component mounts
   useEffect(() => {
     game.addSector(sector);
     game.activateGame();
     sector.addObject(shipWreck);
-    console.log("Game active status: ", game.getGameState());
+    sector.addObject(mother);
+    shipWreck.addItem(fuelCell);
+    console.log("Ship wreck inventory", shipWreck.getInventoryNames());
+    shipWreck.transferItem(fuelCell, harvester);
+    console.log("Ship wreck inventory", shipWreck.getInventoryNames());
+    console.log("Harvester inventory", harvester.getInventoryNames());
+    harvester.transferItem(fuelCell, mother);
+    console.log("Harvester inventory", harvester.getInventoryNames());
+    console.log("Mother inventory", mother.getInventoryNames());
   }, []);
 
   /**

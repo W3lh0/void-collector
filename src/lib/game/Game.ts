@@ -29,25 +29,42 @@ export class Game {
      * This is the central command handler. 
      */
     public processCommand(command: string): string {
-        switch (command.toLowerCase()) {
+        const parts = command.trim().split(/\s+/);
+        const mainCommand = parts[0].toLowerCase();
+        const currentSector = this.getCurrentSector();
+        
+        if (!currentSector) {
+            return "No active sector.";
+        }
+
+            
+        switch (mainCommand) {
             case "scan":
-                const currentSector = this.getCurrentSector();
-
-                if (!currentSector) {
-                    return "No active sector.";
-                }
-
                 const sectorObjects = currentSector.getObjects();
-
+                
                 if (sectorObjects.length === 0) {
                     return "No objects found in this sector.";
                 } else {
                     const objectName = sectorObjects.map(obj => obj.getName()).join(", ");
                     return `Objects detected: ${objectName}`;
                 }
-                
+
+            case "deploy":
+                const targetName = parts[1];
+
+                if (!targetName) {
+                    return "Usage: deploy <target>";
+                }
+                const target = currentSector.getObjectByName(targetName);
+
+                if (target) {
+                    return `Harvester sent to ${targetName}`;
+                } else {
+                    return `Target ${targetName} not found.`;
+                }
+
             case "help":
-                return "Available commands; scan";
+                return "Available commands; scan, deploy";
 
             default:
                 return "Unknown command. Type 'help' for command list"; 

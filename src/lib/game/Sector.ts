@@ -29,6 +29,11 @@ export class Sector {
     public getRadius(): number { return this.radius; }
     public getObjects(): readonly GameObject[] { return this.objects; }
 
+    public getObjectByName(name: string): GameObject | undefined {
+        const normalizedName = name.toLowerCase().trim();
+        return this.objects.find(obj => obj.getName().toLowerCase().trim() === normalizedName)
+    }
+   
     // Public functions
     public addObject(obj: GameObject): void {
         this.objects.push(obj);
