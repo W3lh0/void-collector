@@ -35,6 +35,11 @@ export class GameObject {
         return this.inventory.map(item => item.getName());
     }
 
+    public getItemByName(name:string): Item | undefined {
+        const normalizedName = name.toLowerCase().trim();
+        return this.inventory.find(obj => obj.getName().toLowerCase().trim() === normalizedName);
+    }
+
     /**
      * Functions for inventory management
     */

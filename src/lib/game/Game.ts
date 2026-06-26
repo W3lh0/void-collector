@@ -2,6 +2,8 @@
 
 import { Sector } from '@/lib/game/Sector';
 import { GameObject } from './GameObject';
+import { GameWorld } from './GameWorld';
+import { Item } from './Item';
 
 /**
  * Game - The main game engine class.
@@ -13,6 +15,7 @@ export class Game {
     private sectors: Sector[];
     private gameIsActive: boolean;
     private currentSector: Sector | null = null;
+    private world = new GameWorld();
 
     constructor() {
         this.sectors = [];
@@ -23,6 +26,10 @@ export class Game {
     // Returns whether the game is currently active.
     public getGameState(): boolean { return this.gameIsActive; } 
     public getCurrentSector(): Sector | null { return this.currentSector; }
+
+    public initializeWorld(): void {
+        this.world.initialize(this);
+    }
 
     /**
      * Processes player commands and returns appropriate response.
@@ -36,8 +43,7 @@ export class Game {
         if (!currentSector) {
             return "No active sector.";
         }
-
-            
+  
         switch (mainCommand) {
             case "scan":
                 const sectorObjects = currentSector.getObjects();
@@ -56,9 +62,16 @@ export class Game {
                     return "Usage: deploy <target>";
                 }
                 const target = currentSector.getObjectByName(targetName);
+                const shipWreck = currentSector.getObjectByName("Wreck");
+                const mother = currentSector.getObjectByName("Mother");
+                const fuelCell = shipWreck?.getItemByName("Fuel Cell");
 
                 if (target) {
+                    const harvester = new GameObject("Harvester", 1, 0, 0, 0);
+                    shipWreck.transferItem(fuelCell, harvester);
+                    harvester.transferItem(fuelCell, mother);
                     return `Harvester sent to ${targetName}`;
+
                 } else {
                     return `Target ${targetName} not found.`;
                 }
